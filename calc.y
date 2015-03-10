@@ -5,6 +5,9 @@
 %}
 
 %token NUMBER
+%token BINNUM
+%token HEXNUM
+
 %token PLUS MINUS TIMES DIVIDE POWER MOD
 %token LEFT RIGHT
 %token BLEFT BRIGHT
@@ -31,6 +34,7 @@ Line:
 
 Expression:
      NUMBER { $$=$1; }
+    |HEXNUM { $$=$1; }
 	| Expression PLUS Expression { $$=$1+$3; }
 	| Expression MINUS Expression { $$=$1-$3; }
 	| Expression TIMES Expression { $$=$1*$3; }
