@@ -10,7 +10,7 @@
 white [ \t]+
 digit [0-9]
 integer {digit}+
-hex [0-9A-F]+h
+hex [0-9A-Fa-f]+h
 bin [0-1]+b
 exponent [eE][+-]?{integer}
 real {integer}("."{integer})?{exponent}?
