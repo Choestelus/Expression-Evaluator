@@ -41,4 +41,5 @@ real {integer}("."{integer})?{exponent}?
 "]" return BRIGHT;
 "{" return CLEFT;
 "}" return CRIGHT;
-
+"SHOW" return SHOW;
+"$size" return SIZE;
