@@ -33,4 +33,11 @@ real {integer}("."{integer})?{exponent}?
 "]" return BRIGHT;
 "{" return CLEFT;
 "}" return CRIGHT;
+"PUSH" return PUSH;
+"POP" return POP;
+"r" return REG;
+"SHOW" return SHOW;
+"COPY" return COPY;
+"TO" return TO;
 
+%%
