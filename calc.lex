@@ -2,13 +2,15 @@
 
 %{
 #include "calc.tab.h"
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 %}
 
 white [ \t]+
 digit [0-9]
 integer {digit}+
-hex [0-9A-F]+h
+hex [0-9A-Fa-f]+h
 bin [0-1]+b
 exponent [eE][+-]?{integer}
 real {integer}("."{integer})?{exponent}?
@@ -18,6 +20,12 @@ real {integer}("."{integer})?{exponent}?
 {white} { }
 {real} { yylval=atof(yytext);
  return NUMBER;
+}
+{hex} {
+    int insize = strlen(yytext);
+    yytext[insize-1] = '\0';
+    sscanf(yytext, "%x", &yylval);
+    return HEXNUM;
 }
 
 "+" return PLUS;
@@ -35,9 +43,10 @@ real {integer}("."{integer})?{exponent}?
 "}" return CRIGHT;
 "PUSH" return PUSH;
 "POP" return POP;
-"r" return REG;
+"$r" return REG;
 "SHOW" return SHOW;
 "COPY" return COPY;
 "TO" return TO;
+"$size" return SIZE;
 
 %%
