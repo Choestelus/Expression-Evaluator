@@ -48,5 +48,7 @@ real {integer}("."{integer})?{exponent}?
 "COPY" return COPY;
 "TO" return TO;
 "$size" return SIZE;
+"$acc" return ACC;
+"$top" return TOP;
 
 %%

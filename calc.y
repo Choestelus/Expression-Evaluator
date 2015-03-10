@@ -2,8 +2,9 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+
 int regis[10]={0};
-int acc;
+int acc,top;
 struct stack
 {
     int info;
@@ -17,13 +18,13 @@ struct stack *start=NULL;
 %token NUMBER
 %token BINNUM
 %token HEXNUM
-%token SHOW SIZE
+%token SHOW SIZE ACC
 %token PLUS MINUS TIMES DIVIDE POWER MOD
 %token LEFT RIGHT
 %token BLEFT BRIGHT
 %token CLEFT CRIGHT
 %token END
-%token REG COPY TO PUSH POP
+%token REG COPY TO PUSH POP TOP
 
 %left PLUS MINUS
 %left TIMES DIVIDE MOD
@@ -39,8 +40,9 @@ Input:
 
 Line:
      END
-	| Expression END { printf("Result: %d\n", $1); }
-	| COPY REG NUMBER TO REG NUMBER END {regis[$6]=regis[$3]; }
+	| Expression END { printf("Result: %d\n", $1); acc=$1; }
+	| COPY Reg END {}
+    | PUSH Reg { push($2); display(); }
 ;
 
 Expression:
@@ -61,7 +63,15 @@ Expression:
 
 Reg:
     SIZE { $$=getSize(); }
+    | REG NUMBER { $$=regis[$2]; }
+    | ACC { $$=acc; }
+    | TOP { top=getTop(); $$=top; }
+    | REG NUMBER TO REG NUMBER {regis[$5]=regis[$2]; } 
+    | ACC TO REG NUMBER {regis[$4]=acc; }   
+    | SIZE TO REG NUMBER {regis[$4]=getSize(); } 
+    | TOP TO REG NUMBER {regis[$4]=getTop(); } 
 ;
+
 
 %%
 
@@ -75,17 +85,17 @@ int main() {
         fprintf(stderr, "Successful parsing.\n");
     else
         fprintf(stderr, "error found.\n");
+
 }
 
 
-push()
+push(int data)
 {
     struct stack *new,*temp;
     int i=0;
 
     new=(struct stack *)malloc(sizeof(struct stack));
-    printf("Enter value for stack: ");
-    scanf("%d",&new->info);
+    new->info = data;
     new->link=start;
     start=new;
 }
@@ -116,6 +126,7 @@ display()
 {
     struct stack *temp;
     printf("\n****Stack Values****\n");
+    printf("TOP : %d\n", getTop());
     for(temp=start;temp!=NULL;temp=temp->link)
     {
         printf("%d\n",temp->info);
@@ -131,4 +142,10 @@ getSize()
         i++;
     }
     return i;
+}
+
+getTop()
+{
+    struct stack *temp;
+    return start->info;
 }
