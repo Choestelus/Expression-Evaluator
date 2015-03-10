@@ -1,5 +1,2 @@
-*.lex.c
-*.tab.c
-*.tab.h
-Makefile
-make.sh
+!*.lex
+!*.y
