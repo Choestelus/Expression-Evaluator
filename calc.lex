@@ -13,9 +13,12 @@ real {integer}("."{integer})?{exponent}?
 %%
 
 {white} { }
-{real} { yylval=atof(yytext); 
+{real} { yylval=atof(yytext);
  return NUMBER;
 }
+"AND" return AND;
+"OR" return OR;
+"NOT" return NOT;
 
 "+" return PLUS;
 "-" return MINUS;

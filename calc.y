@@ -9,6 +9,7 @@
 %token PLUS MINUS TIMES DIVIDE POWER
 %token LEFT RIGHT
 %token END
+%token AND OR NOT
 
 %left PLUS MINUS
 %left TIMES DIVIDE
