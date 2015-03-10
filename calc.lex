@@ -8,6 +8,8 @@
 white [ \t]+
 digit [0-9]
 integer {digit}+
+hex [0-9A-F]+h
+bin [0-1]+b
 exponent [eE][+-]?{integer}
 real {integer}("."{integer})?{exponent}?
 
@@ -27,4 +29,8 @@ real {integer}("."{integer})?{exponent}?
 ")" return RIGHT;
 "\n" return END;
 "\\" return MOD;
+"[" return BLEFT;
+"]" return BRIGHT;
+"{" return CLEFT;
+"}" return CRIGHT;
 
