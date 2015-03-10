@@ -1,5 +1,6 @@
+%option noyywrap
+
 %{
-#define YYSTYPE double
 #include "calc.tab.h"
 #include <stdlib.h>
 %}
@@ -16,9 +17,6 @@ real {integer}("."{integer})?{exponent}?
 {real} { yylval=atof(yytext);
  return NUMBER;
 }
-"AND" return AND;
-"OR" return OR;
-"NOT" return NOT;
 
 "+" return PLUS;
 "-" return MINUS;
@@ -28,4 +26,5 @@ real {integer}("."{integer})?{exponent}?
 "(" return LEFT;
 ")" return RIGHT;
 "\n" return END;
+"\\" return MOD;
 
