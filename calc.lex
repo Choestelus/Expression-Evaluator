@@ -2,7 +2,9 @@
 
 %{
 #include "calc.tab.h"
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 %}
 
 white [ \t]+
@@ -18,6 +20,12 @@ real {integer}("."{integer})?{exponent}?
 {white} { }
 {real} { yylval=atof(yytext);
  return NUMBER;
+}
+{hex} {
+    int insize = strlen(yytext);
+    yytext[insize-1] = '\0';
+    sscanf(yytext, "%x", &yylval);
+    return HEXNUM;
 }
 
 "+" return PLUS;
