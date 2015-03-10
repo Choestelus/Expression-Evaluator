@@ -37,6 +37,8 @@ Expression:
 	| MINUS Expression %prec NEG { $$=-$2; }
 	| Expression POWER Expression { $$=pow($1,$3); }
 	| LEFT Expression RIGHT { $$=$2; }
+    | BLEFT Expression BRIGHT { $$=$2; }
+    | CLEFT Expression CRIGHT { $$=$2; }
 ;
 
 %%
