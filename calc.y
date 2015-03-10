@@ -7,6 +7,8 @@
 %token NUMBER
 %token PLUS MINUS TIMES DIVIDE POWER MOD
 %token LEFT RIGHT
+%token BLEFT BRIGHT
+%token CLEFT CRIGHT
 %token END
 
 %left PLUS MINUS
