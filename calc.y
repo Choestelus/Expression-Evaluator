@@ -18,7 +18,7 @@
 %%
 
 Input:
-    
+
      | Input Line
 ;
 
