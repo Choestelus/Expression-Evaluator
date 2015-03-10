@@ -27,4 +27,5 @@ real {integer}("."{integer})?{exponent}?
 ")" return RIGHT;
 "\n" return END;
 "\\" return MOD;
-
+"SHOW" return SHOW;
+"$size" return SIZE;
