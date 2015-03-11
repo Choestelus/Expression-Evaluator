@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
+#include <inttypes.h>
 #include <math.h>
 %}
 
@@ -19,28 +21,28 @@ real {integer}("."{integer})?{exponent}?
 %%
 
 {white} { }
-{real} { yylval=atof(yytext);
+{real} { yylval=atoll(yytext);
  return NUMBER;
 }
 {hex} {
     int insize = strlen(yytext);
     yytext[insize-1] = '\0';
-    sscanf(yytext, "%x", &yylval);
+    sscanf(yytext, "%"PRIx64"", &yylval);
     return HEXNUM;
 }
 
 {bin} {
     int insize = strlen(yytext);
     yytext[insize-1] = '\0';
-    int decimal=0, i=0, rem, n;
-    sscanf(yytext, "%d", &n); 
-    while (n!=0) 
-    { 
-    	rem = n%10; 
-    	n/=10; 
-    	decimal += rem*pow(2,i); 
-    	++i; 
-    } 
+    int64_t decimal=0, i=0, rem, n;
+    sscanf(yytext, "%"PRId64"", &n);
+    while (n!=0)
+    {
+        rem = n%10;
+        n/=10;
+        decimal += rem*pow(2,i);
+        ++i;
+    }
 
     yylval = decimal;
     return NUMBER;

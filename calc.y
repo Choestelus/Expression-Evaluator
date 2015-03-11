@@ -2,12 +2,16 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
+#include <inttypes.h>
 
-int regis[10]={0};
-int acc,top,temppop;
+#define YYSTYPE int64_t
+
+int64_t regis[10]={0};
+int64_t acc,top,temppop;
 struct stack
 {
-    int info;
+    int64_t info;
     struct stack *link;
 };
 
@@ -41,7 +45,7 @@ Input:
 
 Line:
      END
-	| Expression END { printf("Result: %d\n", $1); acc=$1; }
+	| Expression END { printf("Result: %"PRId64"\n", $1); acc=$1; }
 	| COPY Reg END {}
 	| Error END {printf("ERROR\n");}
 	| error END {printf("ERROR\n");}
@@ -71,10 +75,10 @@ Reg:
     | REG NUMBER { $$=regis[$2]; }
     | ACC { $$=acc; }
     | TOP { top=getTop(); $$=top; }
-    | REG NUMBER TO REG NUMBER {regis[$5]=regis[$2]; } 
-    | ACC TO REG NUMBER {regis[$4]=acc; }   
-    | SIZE TO REG NUMBER {regis[$4]=getSize(); } 
-    | TOP TO REG NUMBER {regis[$4]=getTop(); } 
+    | REG NUMBER TO REG NUMBER {regis[$5]=regis[$2]; }
+    | ACC TO REG NUMBER {regis[$4]=acc; }
+    | SIZE TO REG NUMBER {regis[$4]=getSize(); }
+    | TOP TO REG NUMBER {regis[$4]=getTop(); }
 ;
 
 Error:
@@ -97,10 +101,10 @@ int main() {
 }
 
 
-push(int data)
+push(int64_t data)
 {
     struct stack *new,*temp;
-    int i=0;
+    int64_t i=0;
 
     new=(struct stack *)malloc(sizeof(struct stack));
     new->info = data;
@@ -108,21 +112,21 @@ push(int data)
     start=new;
 }
 
-pop(int id)
+pop(int64_t id)
 {
     struct stack *temp,*temp2;
-    int i=0;
+    int64_t i=0;
 
     for(temp=start;temp!=NULL;temp=temp->link)
     {
         i++;
     }
-    
+
     if(i==0)
     {
         fprintf(stderr, "error: stack empty.\n");
     }
-    
+
     else
     {
         regis[id] = getTop();
@@ -136,17 +140,17 @@ display()
 {
     struct stack *temp;
     printf("\n****Stack Values****\n");
-    printf("TOP : %d\n", getTop());
+    printf("TOP : %"PRId64"\n", getTop());
     for(temp=start;temp!=NULL;temp=temp->link)
     {
-        printf("%d\n",temp->info);
+        printf("%"PRId64"\n",temp->info);
     }
 }
 
 getSize()
 {
     struct stack *temp;
-    int i=0;
+    int64_t i=0;
     for(temp=start;temp!=NULL;temp=temp->link)
     {
         i++;
