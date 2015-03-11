@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 int regis[10]={0};
-int acc,top;
+int acc,top,temppop;
 struct stack
 {
     int info;
@@ -43,11 +43,12 @@ Line:
 	| Expression END { printf("Result: %d\n", $1); acc=$1; }
 	| COPY Reg END {}
     | PUSH Reg { push($2); display(); }
+    | POP REG NUMBER { pop($3); }
 ;
 
 Expression:
      NUMBER { $$=$1; }
-    |HEXNUM { $$=$1; }
+    | HEXNUM { $$=$1; }
 	| Expression PLUS Expression { $$=$1+$3; }
 	| Expression MINUS Expression { $$=$1-$3; }
 	| Expression TIMES Expression { $$=$1*$3; }
@@ -100,10 +101,11 @@ push(int data)
     start=new;
 }
 
-pop()
+pop(int id)
 {
     struct stack *temp,*temp2;
     int i=0;
+
     for(temp=start;temp!=NULL;temp=temp->link)
     {
         i++;
@@ -111,11 +113,12 @@ pop()
     
     if(i==0)
     {
-        printf("Stack Empty");
+        fprintf(stderr, "error: stack empty.\n");
     }
     
     else
     {
+        regis[id] = getTop();
         temp2=start->link;
         start=temp2;
         printf("\n***The value has been poped***\n");
@@ -135,9 +138,9 @@ display()
 
 getSize()
 {
-  struct stack *temp;
-  int i=0;
-  for(temp=start;temp!=NULL;temp=temp->link)
+    struct stack *temp;
+    int i=0;
+    for(temp=start;temp!=NULL;temp=temp->link)
     {
         i++;
     }
@@ -146,6 +149,5 @@ getSize()
 
 getTop()
 {
-    struct stack *temp;
     return start->info;
 }
