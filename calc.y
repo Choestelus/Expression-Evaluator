@@ -27,13 +27,17 @@ struct stack *start=NULL;
 %token LEFT RIGHT
 %token BLEFT BRIGHT
 %token CLEFT CRIGHT
-%token END
 %token REG COPY TO PUSH POP TOP
 %token ERROR
+%token NOT
+%token AND OR
+%token END
 
 %left PLUS MINUS
 %left TIMES DIVIDE MOD
+%left AND OR
 %left NEG
+%left NOT
 %right POWER
 
 %start Input
@@ -61,7 +65,10 @@ Expression:
 	| Expression TIMES Expression { $$=$1*$3; }
 	| Expression DIVIDE Expression { $$=$1/$3; }
 	| Expression MOD Expression { $$=$1%$3; }
+	| Expression AND Expression { $$=$1&$3; }
+	| Expression OR Expression { $$=$1|$3; }
 	| MINUS Expression %prec NEG { $$=-$2; }
+	| NOT Expression %prec NOT { $$=~$2; }
 	| Expression POWER Expression { $$=pow($1,$3); }
     | LEFT Expression RIGHT { $$=$2; }
     | BLEFT Expression BRIGHT { $$=$2; }

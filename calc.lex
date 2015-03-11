@@ -70,7 +70,9 @@ real {integer}("."{integer})?{exponent}?
 "$size" return SIZE;
 "$acc" return ACC;
 "$top" return TOP;
-
+"AND" return AND;
+"OR" return OR;
+"NOT" return NOT;
 . return ERROR;
 
 %%
