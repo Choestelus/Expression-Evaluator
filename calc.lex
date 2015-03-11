@@ -28,6 +28,7 @@ real {integer}("."{integer})?{exponent}?
     return HEXNUM;
 }
 
+
 "+" return PLUS;
 "-" return MINUS;
 "*" return TIMES;
@@ -50,5 +51,7 @@ real {integer}("."{integer})?{exponent}?
 "$size" return SIZE;
 "$acc" return ACC;
 "$top" return TOP;
+
+. return ERROR;
 
 %%

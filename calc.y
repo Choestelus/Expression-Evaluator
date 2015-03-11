@@ -25,6 +25,7 @@ struct stack *start=NULL;
 %token CLEFT CRIGHT
 %token END
 %token REG COPY TO PUSH POP TOP
+%token ERROR
 
 %left PLUS MINUS
 %left TIMES DIVIDE MOD
@@ -42,7 +43,9 @@ Line:
      END
 	| Expression END { printf("Result: %d\n", $1); acc=$1; }
 	| COPY Reg END {}
-    | PUSH Reg { push($2); display(); }
+    | PUSH Reg END { push($2); display(); }
+	| Error END {printf("ERROR\n");}
+	| error END {printf("ERROR\n");}
 ;
 
 Expression:
@@ -55,10 +58,11 @@ Expression:
 	| Expression MOD Expression { $$=$1%$3; }
 	| MINUS Expression %prec NEG { $$=-$2; }
 	| Expression POWER Expression { $$=pow($1,$3); }
-	| LEFT Expression RIGHT { $$=$2; }
+    | LEFT Expression RIGHT { $$=$2; }
     | BLEFT Expression BRIGHT { $$=$2; }
     | CLEFT Expression CRIGHT { $$=$2; }
     | SHOW Reg { $$=$2; }
+	| Reg { $$ = $1;}
 ;
 
 Reg:
@@ -72,6 +76,9 @@ Reg:
     | TOP TO REG NUMBER {regis[$4]=getTop(); } 
 ;
 
+Error:
+	ERROR {}
+	| Error ERROR {}
 
 %%
 
