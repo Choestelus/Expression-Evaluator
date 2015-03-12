@@ -20,6 +20,7 @@ struct stack *start=NULL;
 
 int64_t* getTopPtr();
 char top_flag = 0;
+char show_flag = 0;
 %}
 
 %token NUMBER
@@ -57,7 +58,10 @@ Line:
             if(!top_flag)
             {
                 printf("Result: %"PRId64"\n", $1);
-                acc=$1;
+                if(!show_flag)
+                    acc=$1;
+                else
+                    show_flag = 0;
             }
             else
             {
@@ -87,8 +91,8 @@ Expression:
     | LEFT Expression RIGHT { $$=$2; }
     | BLEFT Expression BRIGHT { $$=$2; }
     | CLEFT Expression CRIGHT { $$=$2; }
-    | SHOW Reg { $$=$2; }
-	| Reg { $$ = $1;}
+    | SHOW Reg { $$=$2; show_flag=1; }
+	| Reg { $$ = $1; }
 ;
 
 Reg:
