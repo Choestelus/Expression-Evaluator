@@ -8,7 +8,8 @@
 #define YYSTYPE int64_t
 
 int64_t regis[10]={0};
-int64_t acc,top,temppop;
+int64_t acc,temppop;
+int64_t *top;
 struct stack
 {
     int64_t info;
@@ -17,6 +18,8 @@ struct stack
 
 struct stack *start=NULL;
 
+int64_t* getTopPtr();
+char top_flag = 0;
 %}
 
 %token NUMBER
@@ -49,7 +52,18 @@ Input:
 
 Line:
      END
-	| Expression END { printf("Result: %"PRId64"\n", $1); acc=$1; }
+	| Expression END
+        {
+            if(!top_flag)
+            {
+                printf("Result: %"PRId64"\n", $1);
+                acc=$1;
+            }
+            else
+            {
+                top_flag = 0;
+            }
+        }
 	| COPY Reg END {}
 	| Error END {printf("ERROR\n");}
 	| error END {printf("ERROR\n");}
@@ -81,7 +95,19 @@ Reg:
     SIZE { $$=getSize(); }
     | REG NUMBER { $$=regis[$2]; }
     | ACC { $$=acc; }
-    | TOP { if(getSize()==0)fprintf(stderr, "error: stack empty.\n"); else {top=getTop(); $$=top;} }
+    | TOP
+    {
+        top = getTopPtr();
+        if( top == NULL )
+        {
+            fprintf(stderr, "error: stack empty.\n");
+            top_flag = 1;
+        }
+        else
+        {
+            $$=*top;
+        }
+    }
     | REG NUMBER TO REG NUMBER {regis[$5]=regis[$2]; }
     | ACC TO REG NUMBER {regis[$4]=acc; }
     | SIZE TO REG NUMBER {regis[$4]=getSize(); }
@@ -169,3 +195,8 @@ getTop()
 {
     return start->info;
 }
+int64_t* getTopPtr()
+{
+    return &(start->info);
+}
+
