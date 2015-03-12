@@ -81,7 +81,7 @@ Reg:
     SIZE { $$=getSize(); }
     | REG NUMBER { $$=regis[$2]; }
     | ACC { $$=acc; }
-    | TOP { top=getTop(); $$=top; }
+    | TOP { if(getSize()==0)fprintf(stderr, "error: stack empty.\n"); else {top=getTop(); $$=top;} }
     | REG NUMBER TO REG NUMBER {regis[$5]=regis[$2]; }
     | ACC TO REG NUMBER {regis[$4]=acc; }
     | SIZE TO REG NUMBER {regis[$4]=getSize(); }
